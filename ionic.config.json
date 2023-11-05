@@ -1,0 +1,7 @@
+{
+  "name": "chatloop",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
