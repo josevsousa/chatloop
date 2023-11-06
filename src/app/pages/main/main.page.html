@@ -1,0 +1,46 @@
+<app-header title="bate papo" page="main"></app-header>
+
+<ion-content [fullscreen]="true" class="space-top">
+
+  <ion-list class="space-top-10">
+
+    <ion-item-sliding class="space-button-5">
+      <ion-item>
+        <ion-avatar aria-hidden="true" slot="start">
+          <img alt="" class="avatar" [ngClass]="online ? 'on' : 'off'"
+            src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <ion-label>Maria</ion-label>
+        <ion-buttons>
+          <ion-button>
+            <ion-icon slot="icon-only" [ngClass]="online ? 'onFavorit' : 'off'" name="heart"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-chip [color]="online?'success':'medium'">22</ion-chip>
+      </ion-item>
+      <ion-item-options>
+        <ion-item-option color="warning">
+          <ion-icon slot="icon-only" name="lock-closed-outline"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="danger">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="success">
+      <ion-icon name="chatbubbles-outline" ></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+
+<!-- <ion-tab-bar slot="bottom">
+  <ion-tab-button tab="search">
+    <ion-icon name="search" aria-hidden="true"></ion-icon>
+    encontrar pessoas
+  </ion-tab-button>
+</ion-tab-bar> -->
