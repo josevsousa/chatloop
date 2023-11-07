@@ -10,6 +10,7 @@ export class HeaderComponent{
 
   @Input() title = '';
   @Input() page = '';
+  @Input() backButton!: String;
 
   firebaseSvc = inject(FirebaseService);
   router = inject(Router);
@@ -18,8 +19,8 @@ export class HeaderComponent{
   logOut(): void{
     this.firebaseSvc.desconectarGoogle();
   }
-  linkProfile(){
-    this.router.navigate(['auth/profile'])
+  sendRouter(link: string){
+    this.router.navigate([link])
   }
 
 }

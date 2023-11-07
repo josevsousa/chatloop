@@ -1,17 +1,22 @@
 <ion-header class="ion-no-border">
-
   <ion-toolbar>
+
+    <!-- nav main -->
     <ng-container *ngIf="page === 'main'">
       <ion-buttons slot="secondary">
         <ion-button>
           <ion-icon slot="icon-only" name="person"></ion-icon>
         </ion-button>
-        <ion-button color="success" (click)="linkProfile()">
+        <ion-button color="success" (click)="sendRouter('auth/profile')">
           <ion-icon slot="icon-only" name="chatbubble-ellipses-outline"></ion-icon>
-        </ion-button> 
+        </ion-button>
       </ion-buttons>
     </ng-container>
 
+    <!-- padrao da navbar -->
+    <ion-buttons slot="start">
+      <ion-back-button *ngIf="backButton" defaultHref="backButton"></ion-back-button>
+    </ion-buttons>
     <ion-title>{{title}}</ion-title>
   </ion-toolbar>
 
