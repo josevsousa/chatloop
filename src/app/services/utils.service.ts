@@ -24,12 +24,11 @@ export class UtilsService {
     toast.present();
   }
 
-    // ============ Evia a qualquer pagina disponivel =============
-    routerLink(url: string) {
-      return this.router.navigateByUrl(url);
-    }
+  // ============ Evia a qualquer pagina disponivel =============
+  routerLink(url: string) {
+    return this.router.navigateByUrl(url);
+  }
   
-
   // ============ Guarda um elemento no localstore  =============  
   saveInLocalStore(key: string, value: any){
     return localStorage.setItem(key, JSON.stringify(value)) //valor = JSON > string

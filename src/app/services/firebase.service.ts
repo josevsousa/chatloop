@@ -28,12 +28,10 @@ export class FirebaseService {
     return this.auth.signInWithPopup(new GoogleAuthProvider())
       .then((user) => {
         this.router.navigate(['main']);
-
         // ==== grava usuario no db ==== 
         let path = `user/${user.user.uid}`;
         this.setDocument(path, {
           uid: user.user.uid,
-          name: user.user.displayName,
           ativo: true
         })
       })
@@ -56,16 +54,16 @@ export class FirebaseService {
 
   // =============== BASE DE DADOS FIRESTORE ================
   // ==== Setar um documento ====
-  setDocument(path: string, data: any) {
-    return setDoc(doc(getFirestore(), path), data);
+  async setDocument(path: string, data: any) {
+    return await setDoc(doc(getFirestore(), path), data);
   }
   // ==== Obter um documento ====
   async getDocument(path: string) {
     return (await getDoc(doc(getFirestore(), path))).data();
   }
   // ==== Atualizar um documento ====
-  updateDocument(path: string, data: any) {
-    return updateDoc(doc(getFirestore(), path ), data );
+  async updateDocument(path: string, data: any) {
+    return await updateDoc(doc(getFirestore(), path ), data );
   }
 
   //=== TEMP teste de uso do getDocument
