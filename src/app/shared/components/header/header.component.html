@@ -4,10 +4,10 @@
     <!-- nav main -->
     <ng-container *ngIf="page === 'main'">
       <ion-buttons slot="secondary">
-        <ion-button>
-          <ion-icon slot="icon-only" name="person"></ion-icon>
+        <ion-button (click)="logOut()">
+          <ion-icon slot="icon-only" name="person" ></ion-icon>
         </ion-button>
-        <ion-button color="success" (click)="sendRouter('auth/profile')">
+        <ion-button color="success" (click)="routerLink('auth/profile')">
           <ion-icon slot="icon-only" name="chatbubble-ellipses-outline"></ion-icon>
         </ion-button>
       </ion-buttons>

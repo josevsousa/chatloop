@@ -1,20 +1,50 @@
-import { CanActivateFn, Router } from "@angular/router";
-import {  inject } from "@angular/core";
-import { FirebaseService } from "../services/firebase.service";
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Observable } from 'rxjs';
+import { FirebaseService } from '../services/firebase.service';
+import { UtilsService } from '../services/utils.service';
 
-export const authGuard: CanActivateFn = (route, state) => {
-    const router: Router = inject(Router);
-    const firebaseSvc = inject(FirebaseService);
+@Injectable({
+    providedIn: 'root'
+})
+export class AuthGuard implements CanActivate {
 
-    return new Promise(resolve => {
-        firebaseSvc.user$.subscribe(user => {
-            if (user.user) {
-                console.log("dentro do auth.guard");
-                resolve(true);
-            } else {
-                router.navigate(['/']);
-                resolve(false)
-            }
+    firebaseSvc = inject(FirebaseService);
+    utilsSvc = inject(UtilsService);
+
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+
+        // let user = localStorage.getItem('user');
+
+        // return new Promise((resolve) => {
+
+        //     this.firebaseSvc.getAuth().onAuthStateChanged((auth) => {
+        //         // se o tiver um unser altenticado no firebase e no localstore
+        //         if (auth.uid) {
+        //             // if(user) resolve(true);
+        //             resolve(true);
+        //         }
+        //         else {
+        //             this.utilsSvc.routerLink('/auth');
+        //             resolve(false);
+        //         }
+        //     })
+        // });
+
+        return new Promise(resolve => {
+            this.firebaseSvc.user$.subscribe(user => {
+                if (user.user) {
+                    resolve(true)
+                } else {
+                    this.utilsSvc.routerLink('/auth')
+                    resolve(false)
+                }
+            })
+
         })
-    })
+
+    }
+
 }

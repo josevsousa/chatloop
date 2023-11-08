@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { GoogleAuthProvider, getAuth } from '@angular/fire/auth';
-import { getFirestore, setDoc, getDoc, doc } from '@angular/fire/firestore';
+import { getFirestore, setDoc, getDoc, doc, updateDoc } from '@angular/fire/firestore';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -12,13 +12,17 @@ import { Router } from '@angular/router';
 export class FirebaseService {
 
   router = inject(Router);
+
   user$ = this.auth.authState.pipe(
     map(user => ({ user }))
   )
-
   constructor(private auth: AngularFireAuth) { };
 
   // =========== AUTH ============
+  // getAuth(){
+  //   return getAuth();
+  // }
+
   // ====== Conectar ====
   loginGoogle() {
     return this.auth.signInWithPopup(new GoogleAuthProvider())
@@ -38,21 +42,19 @@ export class FirebaseService {
 
   // ====== desconectar Usuario ====
   desconectarGoogle() {
-    const user = getAuth().currentUser;
+    const user = getAuth().currentUser; //pegando o user ativo
     this.auth.signOut().then(() => {
       this.router.navigate(['/']);
       const path = `user/${user.uid}`;
-      //=== gravar que o user esta off ===
-      this.setDocument(path, {
-        uid: user.uid,
-        name: user.displayName,
-        ativo: false
+      //=== atualizar que o user esta off ===
+      this.updateDocument(path, { 
+        ativo: false 
       })
+
     });
   }
 
-
-  // =============== BASE DE DADOS ================
+  // =============== BASE DE DADOS FIRESTORE ================
   // ==== Setar um documento ====
   setDocument(path: string, data: any) {
     return setDoc(doc(getFirestore(), path), data);
@@ -61,6 +63,19 @@ export class FirebaseService {
   async getDocument(path: string) {
     return (await getDoc(doc(getFirestore(), path))).data();
   }
+  // ==== Atualizar um documento ====
+  updateDocument(path: string, data: any) {
+    return updateDoc(doc(getFirestore(), path ), data );
+  }
 
+  //=== TEMP teste de uso do getDocument
+  // mostrarUser(){
+  //   const user = getAuth().currentUser; //pegando o user ativo
+  //   const path = `user/${user.uid}`;
+  //   console.log(user.displayName);
+  //   this.getDocument(path).then(user => {
+  //       console.log(user)   
+  //     })
+  // }
 
 }

@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 // ========FIREBASE========
-import {AngularFireModule} from '@angular/fire/compat';    
+import { AngularFireModule } from '@angular/fire/compat';    
 import { environment } from 'src/environments/environment';
 
 

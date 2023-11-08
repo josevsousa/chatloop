@@ -1,6 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import { Router } from '@angular/router';
+import { UtilsService } from 'src/app/services/utils.service';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -13,14 +14,17 @@ export class HeaderComponent{
   @Input() backButton!: String;
 
   firebaseSvc = inject(FirebaseService);
-  router = inject(Router);
+  utilSvc = inject(UtilsService);
 
   //====auth====
   logOut(): void{
+    console.log("logout")
     this.firebaseSvc.desconectarGoogle();
   }
-  sendRouter(link: string){
-    this.router.navigate([link])
+  // ============ Evia a qualquer pagina disponivel =============
+  routerLink(url: string) {
+    this.utilSvc.routerLink(url);
   }
+  
 
 }
