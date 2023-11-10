@@ -4,6 +4,7 @@ import { GoogleAuthProvider, getAuth } from '@angular/fire/auth';
 import { getFirestore, setDoc, getDoc, doc, updateDoc } from '@angular/fire/firestore';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
+import { UtilsService } from './utils.service';
 
 
 @Injectable({
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 export class FirebaseService {
 
   router = inject(Router);
+  utilsSvc = inject(UtilsService);
 
   user$ = this.auth.authState.pipe(
     map(user => ({ user }))
@@ -33,7 +35,14 @@ export class FirebaseService {
         this.setDocument(path, {
           uid: user.user.uid,
           ativo: true
-        })
+        });
+        // === grava usuario no localStorage
+        let userLS = { 
+          displayName: user.user.displayName,
+          email: user.user.email,
+          photoUrl: user.user.photoURL
+        }
+        this.utilsSvc.saveInLocalStore('user', userLS);
       })
       .catch(error => console.log(error));
   }
@@ -48,6 +57,8 @@ export class FirebaseService {
       this.updateDocument(path, { 
         ativo: false 
       })
+      //=== revomer user do localStorage
+      this.utilsSvc.delElementLocalStorage('user');
 
     });
   }

@@ -12,19 +12,24 @@ export class HeaderComponent{
   @Input() title = '';
   @Input() page = '';
   @Input() backButton!: String;
+  @Input() isModal!: boolean;
 
   firebaseSvc = inject(FirebaseService);
   utilSvc = inject(UtilsService);
 
-  //====auth====
+  //============ auth ==============
   logOut(): void{
-    console.log("logout")
     this.firebaseSvc.desconectarGoogle();
   }
-  // ============ Evia a qualquer pagina disponivel =============
+  // ============ Router =============
   routerLink(url: string) {
     this.utilSvc.routerLink(url);
   }
-  
 
+  // =========== Modal ============
+  dismissModal(){
+    this.utilSvc.dismissModal();
+  }
+
+  
 }

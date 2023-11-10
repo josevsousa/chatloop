@@ -1,21 +1,41 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
+<ion-header class="ion-no-border" >
+  <ion-toolbar color="primary">
 
     <!-- nav main -->
     <ng-container *ngIf="page === 'main'">
       <ion-buttons slot="secondary">
-        <ion-button (click)="logOut()">
+        <ion-button (click)="routerLink('auth/profile')">
           <ion-icon slot="icon-only" name="person" ></ion-icon>
         </ion-button>
-        <ion-button color="success" (click)="routerLink('auth/profile')">
+        <ion-button color="success" (click)="logOut()">
           <ion-icon slot="icon-only" name="chatbubble-ellipses-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ng-container>
 
+    <!-- nav profile -->
+    <ng-container *ngIf="page === 'profile'">
+      <ion-buttons slot="secondary">
+        <ion-button>
+          <ion-icon slot="icon-only" name="alert-circle-outline" ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ng-container>
+
+    
+    <ion-buttons slot="start">
+
+    </ion-buttons>
+
     <!-- padrao da navbar -->
     <ion-buttons slot="start">
+      <!-- back-Button -->
       <ion-back-button *ngIf="backButton" defaultHref="backButton"></ion-back-button>
+      <!-- dismiss buttom modal -->
+      <ion-button (click)="dismissModal()" *ngIf="isModal">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+
     </ion-buttons>
     <ion-title>{{title}}</ion-title>
   </ion-toolbar>
