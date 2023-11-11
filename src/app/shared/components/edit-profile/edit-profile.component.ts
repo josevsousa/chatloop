@@ -12,8 +12,15 @@ export class EditProfileComponent  implements OnInit {
   utilsSvc = inject(UtilsService);
   user!: any;
 
+    //=========== Tirar/Selecionar Photo ==========
+    async takeImage(){
+      const dataUrl = (await this.utilsSvc.takePicture('Image do produto')).dataUrl;
+      this.form.controls.image.setValue(dataUrl);
+    }
+
   form = new FormGroup({
-    displayName: new FormControl('joooo', Validators.required)
+    displayName: new FormControl('joooo', Validators.required),
+    image: new FormControl('')
   })
 
   ngOnInit() {

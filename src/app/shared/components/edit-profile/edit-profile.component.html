@@ -1,16 +1,25 @@
 <app-header title="Editar Perfil" [isModal]="true"></app-header>
 
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <!-- Foto Perfil -->
-  <ion-avatar class="center">
-    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-  </ion-avatar>
+<ion-content [fullscreen]="true">
+
+
+    <!-- Foto Perfil -->
+    <ion-avatar class="center">
+      <img *ngIf="!form.value.image" alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      <img *ngIf="form.value.image" [src]="form.value.image" alt="">
+    </ion-avatar>
+
+
   <div class="center">
     <h2>
       <!-- <ion-icon name="lock-closed-outline"></ion-icon> -->
       {{user.displayName}}
     </h2>
+    
+    <ion-button (click)="takeImage()" size="small" mode="ios" shape="round">
+      Tirar/Selecionar
+    </ion-button>
   </div>
 
   <form [formGroup]="form">
@@ -37,7 +46,7 @@
     <ion-button>
       <!-- <ion-icon slot="icon-only" name="add" ></ion-icon> -->
       Alterar
-    </ion-button>  
-    
+    </ion-button>
+
   </div>
 </ion-content>
