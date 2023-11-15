@@ -1,11 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { GoogleAuthProvider, getAuth } from '@angular/fire/auth';
-import { getFirestore, setDoc, getDoc, doc, updateDoc } from '@angular/fire/firestore';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { UtilsService } from './utils.service';
 
+import { getFirestore, setDoc, getDoc, addDoc, doc, updateDoc, collection } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { getStorage, uploadString, ref, getDownloadURL } from 'firebase/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -14,38 +16,63 @@ export class FirebaseService {
 
   router = inject(Router);
   utilsSvc = inject(UtilsService);
+  storage = inject(AngularFireStorage);
 
   user$ = this.auth.authState.pipe(
     map(user => ({ user }))
   )
+
   constructor(private auth: AngularFireAuth) { };
 
   // =========== AUTH ============
-  // getAuth(){
-  //   return getAuth();
-  // }
+  getAuth(){
+    return getAuth();
+  }
 
+ 
   // ====== Conectar ====
   loginGoogle() {
     return this.auth.signInWithPopup(new GoogleAuthProvider())
       .then((user) => {
         this.router.navigate(['main']);
-        // ==== grava usuario no db ==== 
+
+        // ==== caminho do db ==== 
         let path = `user/${user.user.uid}`;
-        this.setDocument(path, {
+        // ==== usuario ==== 
+        let userLS = {
           uid: user.user.uid,
-          ativo: true
-        });
-        // === grava usuario no localStorage
-        let userLS = { 
-          displayName: user.user.displayName,
+          nome: user.user.displayName,
+          idade: '',
+          sexo: '',
           email: user.user.email,
           photoUrl: user.user.photoURL
         }
+
+        // === gravar no localStorage
         this.utilsSvc.saveInLocalStore('user', userLS);
+        
+        // verificar se o user ja existe
+        this.getDocument(path)
+          .then(resp=>{
+            if (resp) {
+              console.log('existe o user no db!')
+              //=== atualizar que o user esta on ===
+              this.updateDocument(path, {
+                ativo: true
+              })
+            }else{
+              console.log('nao existe o user no db!');
+              // === gravar o user no db
+              this.setDocument(path, userLS);
+            }
+          })
+          .catch(err=>console.log(err))
+          .finally()
+
       })
       .catch(error => console.log(error));
   }
+
 
   // ====== desconectar Usuario ====
   desconectarGoogle() {
@@ -54,8 +81,8 @@ export class FirebaseService {
       this.router.navigate(['/']);
       const path = `user/${user.uid}`;
       //=== atualizar que o user esta off ===
-      this.updateDocument(path, { 
-        ativo: false 
+      this.updateDocument(path, {
+        ativo: false
       })
       //=== revomer user do localStorage
       this.utilsSvc.delElementLocalStorage('user');
@@ -74,17 +101,19 @@ export class FirebaseService {
   }
   // ==== Atualizar um documento ====
   async updateDocument(path: string, data: any) {
-    return await updateDoc(doc(getFirestore(), path ), data );
+    return await updateDoc(doc(getFirestore(), path), data);
   }
+  // ==== Agregar um documento ====
+  addDocument(path: string = "user", data: any) {
+    return addDoc(collection(getFirestore(), path), data);
+  }
+  
+    // =============== upload de image ================
+    async uploadImage(path: string, data_url: string){
+      return uploadString(ref(getStorage(), path), data_url, 'data_url').then(()=>{
+        return getDownloadURL(ref(getStorage(), path))
+      })
+    }
 
-  //=== TEMP teste de uso do getDocument
-  // mostrarUser(){
-  //   const user = getAuth().currentUser; //pegando o user ativo
-  //   const path = `user/${user.uid}`;
-  //   console.log(user.displayName);
-  //   this.getDocument(path).then(user => {
-  //       console.log(user)   
-  //     })
-  // }
 
 }

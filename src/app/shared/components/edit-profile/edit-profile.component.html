@@ -4,17 +4,17 @@
 <ion-content [fullscreen]="true">
 
 
-    <!-- Foto Perfil -->
+    <!-- Avatar Photo -->
     <ion-avatar class="center">
-      <img *ngIf="!form.value.image" alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-      <img *ngIf="form.value.image" [src]="form.value.image" alt="">
+      <!-- <img *ngIf="!user.photoUrl" alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" /> -->
+      <!-- <img *ngIf="user.photoUrl" [src]="imageDataUrl" alt=""> -->
     </ion-avatar>
 
 
   <div class="center">
     <h2>
-      <!-- <ion-icon name="lock-closed-outline"></ion-icon> -->
-      {{user.displayName}}
+      <ion-icon name="lock-closed-outline"></ion-icon>
+      <!-- {{user.nome}} -->
     </h2>
     
     <ion-button (click)="takeImage()" size="small" mode="ios" shape="round">
@@ -25,25 +25,24 @@
   <form [formGroup]="form">
     <ion-list class="ion-padding list-profile">
       <ion-item>
-        <app-custom-input type="text" label="Nome" [control]="form.controls.displayName"></app-custom-input>
+        <!-- <app-custom-input type="text" label="Nome" [control]="form.controls.nome"></app-custom-input> -->
       </ion-item>
       <ion-item>
-        <ion-label>Mega Man X</ion-label>
+        <!-- <app-custom-input type="text" label="Nome" [control]="form.controls.nome"></app-custom-input> -->
       </ion-item>
       <ion-item>
-        <ion-label>The Legend of Zelda</ion-label>
+        <!-- <app-custom-input type="text" label="Nome" [control]="form.controls.nome"></app-custom-input> -->
       </ion-item>
       <ion-item>
-        <ion-label>Pac-Man</ion-label>
+        <!-- <app-custom-input type="text" label="Nome" [control]="form.controls.nome"></app-custom-input> -->
       </ion-item>
       <ion-item>
-        <ion-label>Super Mario World</ion-label>
+        <!-- <app-custom-input type="text" label="Nome" [control]="form.controls.nome"></app-custom-input> -->
       </ion-item>
     </ion-list>
   </form>
-
-  <div class="center">
-    <ion-button>
+  <div class="center" (click)="submit()">
+    <ion-button [disabled]="form.invalid">
       <!-- <ion-icon slot="icon-only" name="add" ></ion-icon> -->
       Alterar
     </ion-button>

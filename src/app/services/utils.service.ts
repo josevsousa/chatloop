@@ -25,11 +25,10 @@ export class UtilsService {
       source: CameraSource.Prompt,
       promptLabelHeader,
       promptLabelPhoto: 'Selecione uma imagen',
-      promptLabelPicture: 'Toma uma photo'
+      promptLabelPicture: 'Tirar uma photo'
 
     });
   };
-
 
   // ========== Loading =========
   loading() {

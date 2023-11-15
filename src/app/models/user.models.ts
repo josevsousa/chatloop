@@ -1,7 +1,10 @@
 export interface User{
-    uid: string,
-    ativo: string,
-    name: string,
-    idade: string,
-    sexo: string
+    uid?: string,
+    nome?: string,
+    idade?: string,
+    sexo?: string,
+    photoUrl?: string,
+    email?: string,
+    status?: string
 }
+

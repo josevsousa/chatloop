@@ -4,19 +4,20 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ProfilePageRoutingModule } from './profile-routing.module';
+import { ProfileEditPageRoutingModule } from './profile-edit-routing.module';
 
-import { ProfilePage } from './ProfilePage';
+import { ProfileEditPage } from './profile-edit.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SharedModule,
-    ProfilePageRoutingModule
+    ProfileEditPageRoutingModule,
+    SharedModule
   ],
-  declarations: [ProfilePage]
+  declarations: [ProfileEditPage]
 })
-export class ProfilePageModule {}
+export class ProfileEditPageModule {}
