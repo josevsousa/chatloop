@@ -11,7 +11,7 @@ export class HeaderComponent{
 
   @Input() title = '';
   @Input() page = '';
-  @Input() backButton!: String;
+  @Input() backButton: string;
   @Input() isModal!: boolean;
 
   firebaseSvc = inject(FirebaseService);
