@@ -14,40 +14,28 @@ export class EditProfileComponent implements OnInit {
   utilsSvc = inject(UtilsService);
   firebaseSvc = inject(FirebaseService);
   imageDataUrl!: string;
-  // uidUser!: string;
   subirImage: boolean = false;
-  user!: User;
+
 
   form = new FormGroup({
-    nome: new FormControl('' , Validators.required),
-    idade: new FormControl(''),
-    sexo: new FormControl(''),
-    email: new FormControl('')
-
+    nome: new FormControl('', Validators.required),
+    idade: new FormControl('', Validators.required),
+    sexo: new FormControl('')
   })
-  
+
   ngOnInit() {
     // === pegando user no db ===
     this.loadingUser();
   }
 
   // ===== Loading o user no db
-  loadingUser(){
-    let uid = this.utilsSvc.getElementLocalStorage('uid');
-    return this.firebaseSvc.getDocument(`user/${uid}`)
-    .then(user => {
-       this.user = user;
-    })
-    .catch(err=>console.log(err));
+  loadingUser() {
+    let user = this.utilsSvc.getElementLocalStorage('user');
+    this.imageDataUrl = user.photoUrl;
 
-    // this.imageDataUrl = this.user.photoUrl;
-
-    console.log("-------------- " + this.user)
-    
-    // this.form.controls.nome.setValue(this.user.nome);
-    // this.form.controls.idade.setValue(this.user.idade);
-    // this.form.controls.sexo.setValue(this.user.sexo);
-    // this.form.controls.email.setValue(this.user.email);
+    this.form.controls.nome.setValue(user.nome);
+    this.form.controls.idade.setValue(user.idade);
+    this.form.controls.sexo.setValue(user.sexo);
   }
 
   //=========== Tirar/Selecionar Photo ==========
@@ -57,41 +45,40 @@ export class EditProfileComponent implements OnInit {
     this.subirImage = true;
   }
 
-  async submit(){
-    if(this.form.valid){
-      
+  async submit() {
+    if (this.form.valid) {
+
       const loading = await this.utilsSvc.loading();
       await loading.present();
 
+      let user = this.utilsSvc.getElementLocalStorage('user');
       // === Subir imagem e obeter sua URL no firestorage ====
-      if(this.subirImage){
+      if (this.subirImage) {
         let dataUrl = this.imageDataUrl;
-        let imagePath = `${this.user.uid}/fotoPerfil/${Date.now()}`;
+        let imagePath = `${user.uid}/fotoPerfil/${Date.now()}`;
         let imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
-
+        this.imageDataUrl = imageUrl;
       }
-
       // === Add o link da nova imagem add o user no db
-      this.firebaseSvc.updateDocument(`user/${this.user.uid}`, {
+      await this.firebaseSvc.updateDocument(`user/${user.uid}`, {
         nome: this.form.value.nome,
-        email: this.form.value.email,
         idade: this.form.value.idade,
         sexo: this.form.value.sexo,
         photoUrl: this.imageDataUrl,
 
+      }).then(() => console.log("gravou user no DB")).catch(err => console.log("nao gravou user no db"))
+
+      // === Atualizar o localStorage
+      await this.utilsSvc.saveInLocalStore('user', {
+        nome: this.form.value.nome,
+        idade: this.form.value.idade,
+        sexo: this.form.value.sexo,
+        photoUrl: this.imageDataUrl,
       })
 
-    //   // === Atualizar o localStorage
-    //   this.utilsSvc.saveInLocalStore('user', {
-    //     nome: this.form.value.nome,
-    //     email: this.form.value.email,
-    //     idade: this.form.value.idade,
-    //     sexo: this.form.value.sexo,
-    //     photoUrl: this.imageDataUrl,
-    // })
-    
-  }
-    console.log("saindo do edit")
+      loading.dismiss();
+      this.utilsSvc.dismissModal();
+    }
   }
 
 }

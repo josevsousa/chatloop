@@ -8,6 +8,7 @@ import { UtilsService } from './utils.service';
 import { getFirestore, setDoc, getDoc, addDoc, doc, updateDoc, collection } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { getStorage, uploadString, ref, getDownloadURL } from 'firebase/storage';
+import { User } from '../models/user.models';
 
 @Injectable({
   providedIn: 'root'
@@ -39,17 +40,14 @@ export class FirebaseService {
         // ==== caminho do db ==== 
         let path = `user/${user.user.uid}`;
         // ==== usuario ==== 
-        let userLS = {
+        let userLS: User = {
           uid: user.user.uid,
           nome: user.user.displayName,
           idade: '',
           sexo: '',
-          email: user.user.email,
-          photoUrl: user.user.photoURL
+          photoUrl: user.user.photoURL,
+          ativo: true
         }
-
-        // === gravar no localStorage
-        this.utilsSvc.saveInLocalStore('user', userLS);
         
         // verificar se o user ja existe
         this.getDocument(path)
@@ -59,11 +57,15 @@ export class FirebaseService {
               //=== atualizar que o user esta on ===
               this.updateDocument(path, {
                 ativo: true
-              })
+              });
+              // === gravar no localStorage
+              this.utilsSvc.saveInLocalStore('user', resp);
             }else{
               console.log('nao existe o user no db!');
               // === gravar o user no db
               this.setDocument(path, userLS);
+              // === gravar no localStorage
+              this.utilsSvc.saveInLocalStore('user', userLS);
             }
           })
           .catch(err=>console.log(err))

@@ -5,6 +5,6 @@ export interface User{
     sexo?: string,
     photoUrl?: string,
     email?: string,
-    status?: string
+    ativo?: boolean
 }
 

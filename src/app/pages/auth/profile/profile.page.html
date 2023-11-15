@@ -2,39 +2,42 @@
 <app-header sendRouter="/profile" page="profile" [title]="'Perfil'" backButton="auth"></app-header>
 
 <ion-content [fullscreen]="true">
-  <div *ngIf="user">
+  
       <!-- Foto Perfil -->
-      <ion-avatar class="center">
+      <ion-avatar class="avatar center">
         <img *ngIf="user.photoUrl"  alt="Silhouette of a person's head" [src]="user.photoUrl" />
+        <img *ngIf="!user.photoUrl" alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+     
       </ion-avatar>
-      <div class="center">
-        <h2>
-          <!-- <ion-icon name="lock-closed-outline"></ion-icon> -->
-          {{(user.nome).split(' ')[0]}}
-        </h2>
-      </div>
+  
 
       <ion-list class="ion-padding list-profile">
         <ion-item>
-          <ion-label>{{user.nome}}</ion-label>
+          <ion-label><b>Nome: </b>{{user.nome}}</ion-label>
         </ion-item>
-        <ion-item>
-          <ion-label>{{user.email}}</ion-label>
+        <ion-item >
+          <ion-label><b>Idade: </b> {{user.idade}}</ion-label>
         </ion-item>
-        <ion-item>
-          <ion-label>{{user.idade}}</ion-label>
+        <ion-item >
+          <ion-label><b>Sexo: </b> {{user.sexo}}</ion-label>
         </ion-item>
       </ion-list>
 
       <div class="center">
         <ion-button (click)="editProfile()">
+        <!-- <ion-button (click)="getUserLS()"> -->
           <ion-icon slot="icon-only" name="add" ></ion-icon>
           Editar
         </ion-button>  
       </div>
-</div>
-<div class="center" *ngIf="!user">
-    <ion-spinner name="dots" color="secondary"></ion-spinner>
-</div>
 
 </ion-content>
+
+<!-- uid?: string,
+nome?: string,
+idade?: string,
+sexo?: string,
+photoUrl?: string,
+email?: string,
+ativo?: boolean
+} -->

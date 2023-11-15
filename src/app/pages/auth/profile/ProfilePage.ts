@@ -18,17 +18,22 @@ export class ProfilePage implements OnInit {
   user!: User;
 
   ngOnInit() {
-    // === pegando user no LS ===
-    this.user = this.utilsSvc.getElementLocalStorage('user');
-    console.log(this.user)
+    this.getUserLS();
   }
 
+  getUserLS(){
+    // === pegando user no LS ===
+    return this.user = this.utilsSvc.getElementLocalStorage('user');
+  }
 
   // ===== Atualizar o profile
   editProfile() {
     this.utilsSvc.presentMotal({
       component: EditProfileComponent,
       cssClass: 'edit-profile-modal'
+    }).finally(()=>{
+      // atualizar o user de localStorage
+      this.getUserLS(); 
     });
   }
 
