@@ -16,17 +16,15 @@ export class MainPage implements OnInit {
   utilsSvc = inject(UtilsService);
   firebaseSvc = inject(FirebaseService);
 
-  user = {} as User;
-  users$: any;
+  users$: User[] = [];
+  user:User = {};
 
-  constructor() { }
+  constructor() {
+     this.user = this.utilsSvc.getElementLocalStorage('user');
+   }
 
   ngOnInit() {
     this.getUsers();
-    this.user = this.utilsSvc.getElementLocalStorage('user');
-    // this.getUsers();
-    // console.log(this.userProfile.uid);
-    // console.log(this.users$)
   }
 
   ionViewWillEnter(){
@@ -40,7 +38,6 @@ export class MainPage implements OnInit {
         next: (resp: any)=>{
           console.log("entrei na page main: ");
           this.users$ = resp;
-          console.log(resp);
         }
       })
   }
