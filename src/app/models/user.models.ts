@@ -4,7 +4,6 @@ export interface User{
     idade?: string,
     sexo?: string,
     photoUrl?: string,
-    email?: string,
     ativo?: boolean
 }
 

@@ -1,11 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { GoogleAuthProvider, getAuth } from '@angular/fire/auth';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { UtilsService } from './utils.service';
 
-import { getFirestore, setDoc, getDoc, addDoc, doc, updateDoc, collection } from '@angular/fire/firestore';
+import { getFirestore, setDoc, getDoc, addDoc, doc, updateDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { getStorage, uploadString, ref, getDownloadURL } from 'firebase/storage';
 import { User } from '../models/user.models';
@@ -18,12 +18,17 @@ export class FirebaseService {
   router = inject(Router);
   utilsSvc = inject(UtilsService);
   storage = inject(AngularFireStorage);
+  // firestore = inject(Firestore);
 
+  // userList$: Observable<any[]>;
   user$ = this.auth.authState.pipe(
     map(user => ({ user }))
   )
 
-  constructor(private auth: AngularFireAuth) { };
+  constructor(private auth: AngularFireAuth) { 
+    // const userCollectionData = collection(this.firestore,'user');
+    // this.userList$ = collectionData(userCollectionData);
+  };
 
   // =========== AUTH ============
   getAuth(){
@@ -108,6 +113,10 @@ export class FirebaseService {
   // ==== Agregar um documento ====
   addDocument(path: string = "user", data: any) {
     return addDoc(collection(getFirestore(), path), data);
+  }
+  // ==== Lista de user ======
+  listUsers(){
+    return collectionData(collection(getFirestore(), 'user'))
   }
   
     // =============== upload de image ================

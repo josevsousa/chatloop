@@ -1,6 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { UtilsService } from 'src/app/services/utils.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { Observable } from 'rxjs';
+
+import { User } from 'src/app/models/user.models';
 
 
 @Component({
@@ -13,41 +16,19 @@ export class MainPage implements OnInit {
   utilsSvc = inject(UtilsService);
   firebaseSvc = inject(FirebaseService);
 
-  online: boolean = true;
-  // userFull: boolean = true;
-  // user!: any;
+  userProfile!: User;
+  users$: User[];
+
   constructor() { }
 
   ngOnInit() {
-    // this.user = this.utilsSvc.getElementLocalStorage('user');
-
-    // ver se existe um se não e criado um userFull
-    // this.iniUserDocument();
+    let users = this.firebaseSvc.listUsers();
+    users.subscribe(users=>{
+       this.users$ = users;
+    });
+    this.userProfile = this.utilsSvc.getElementLocalStorage('user');
+    console.log(this.userProfile.uid)
   }
 
-  // //grava o novo usuario no db
-  // verifyUserFull(path){
-  //   this.firebaseSvc.setDocument(path, {
-  //     user: this.user.uid,
-  //     nome: this.user.displayName,
-  //     photoUrl: this.user.photoUrl,
-  //     sexo: '',
-  //     idade: '',
-  //   } ) 
-  // }
-
-  // //verifica o primeiro acesso para add o user no db
-  // iniUserDocument(){ 
-  //   let path = `userFull/${this.user.uid}`;
-  //   this.firebaseSvc.getDocument(path).then((user)=>{
-  //     if(!user){
-  //       this.userFull = false;
-  //       console.log('dentro do verifyUserFull');
-  //       this.verifyUserFull(path);
-  //     }else{
-  //       console.log('existe um usuario cadastrado');
-  //     }
-  //   }).catch((err)=>console.log(err))
-  // }
 
 }

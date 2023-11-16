@@ -4,20 +4,20 @@
 <ion-content [fullscreen]="true" class="space-top">
 
   <ion-list class="space-top-10 list-profile">
-
-    <ion-item-sliding class="space-button-5">
+    <div  *ngFor="let user of users$">
+    
+    <ion-item-sliding class="space-button-5"  *ngIf="user.uid !== userProfile.uid">
       <ion-item>
         <ion-avatar aria-hidden="true" slot="start">
-          <img alt="" class="avatar" [ngClass]="online ? 'on' : 'off'"
-            src="../../../assets/avatar.svg" />
+          <img alt="" class="avatar" [ngClass]="user.ativo ? 'on' : 'off'" [src]="user.photoUrl" />
         </ion-avatar>
-        <ion-label>Maria</ion-label>
+        <ion-label>{{user.nome}}</ion-label>
         <ion-buttons>
           <ion-button>
-            <ion-icon slot="icon-only" [ngClass]="online ? 'onFavorit' : 'off'" name="heart"></ion-icon>
+            <ion-icon slot="icon-only" [ngClass]="true ? 'onFavorit' : 'off'" name="heart"></ion-icon>
           </ion-button>
         </ion-buttons>
-        <ion-chip [color]="online?'success':'medium'">22</ion-chip>
+        <ion-chip [color]="user.ativo?'success':'medium'">22</ion-chip>
       </ion-item>
       <ion-item-options>
         <ion-item-option color="warning">
@@ -28,6 +28,7 @@
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
+  </div>
 
   </ion-list>
 
