@@ -6,7 +6,7 @@
   <ion-list class="space-top-10 list-profile">
     <div  *ngFor="let user of users$">
     
-    <ion-item-sliding class="space-button-5"  *ngIf="user.uid !== userProfile.uid">
+    <ion-item-sliding class="space-button-5"  *ngIf="isUidDuo(user.uid)">
       <ion-item>
         <ion-avatar aria-hidden="true" slot="start">
           <img alt="" class="avatar" [ngClass]="user.ativo ? 'on' : 'off'" [src]="user.photoUrl" />
@@ -26,7 +26,7 @@
         <ion-item-option color="danger">
           <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
         </ion-item-option>
-      </ion-item-options>
+      </ion-item-options> 
     </ion-item-sliding>
   </div>
 

@@ -5,7 +5,7 @@ import { Observable, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { UtilsService } from './utils.service';
 
-import { getFirestore, setDoc, getDoc, addDoc, doc, updateDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { getFirestore, setDoc, getDoc, addDoc, doc, updateDoc, collection, collectionData, query } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { getStorage, uploadString, ref, getDownloadURL } from 'firebase/storage';
 import { User } from '../models/user.models';
@@ -115,8 +115,9 @@ export class FirebaseService {
     return addDoc(collection(getFirestore(), path), data);
   }
   // ==== Lista de user ======
-  listUsers(){
-    return collectionData(collection(getFirestore(), 'user'))
+  getColletionData( path:string, collectionQurey?: any){
+    const ref = collection(getFirestore(), path);
+    return collectionData(query(ref, collectionQurey));
   }
   
     // =============== upload de image ================

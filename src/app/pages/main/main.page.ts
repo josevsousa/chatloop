@@ -16,19 +16,41 @@ export class MainPage implements OnInit {
   utilsSvc = inject(UtilsService);
   firebaseSvc = inject(FirebaseService);
 
-  userProfile!: User;
-  users$: User[];
+  user = {} as User;
+  users$: any;
 
   constructor() { }
 
   ngOnInit() {
-    let users = this.firebaseSvc.listUsers();
-    users.subscribe(users=>{
-       this.users$ = users;
-    });
-    this.userProfile = this.utilsSvc.getElementLocalStorage('user');
-    console.log(this.userProfile.uid)
+    this.getUsers();
+    this.user = this.utilsSvc.getElementLocalStorage('user');
+    // this.getUsers();
+    // console.log(this.userProfile.uid);
+    // console.log(this.users$)
   }
 
+  ionViewWillEnter(){
+    this.getUsers();
+  }
+
+  getUsers(){
+    let path = "user";
+    let sub = this.firebaseSvc.getColletionData(path)
+      .subscribe({
+        next: (resp: any)=>{
+          console.log("entrei na page main: ");
+          this.users$ = resp;
+          console.log(resp);
+        }
+      })
+  }
+
+  isUidDuo(uid){
+    if(uid === this.user.uid){
+      return false;
+    }else{
+      return true;
+    }
+  }
 
 }

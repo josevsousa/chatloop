@@ -15,7 +15,7 @@ export class ProfilePage implements OnInit {
 
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
-  user!: User;
+  user = {} as User;
   loadind=true;
 
   ngOnInit() {
