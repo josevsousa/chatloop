@@ -20,8 +20,9 @@ export class MainPage implements OnInit {
   user:User = {};
 
   constructor() {
-     this.user = this.utilsSvc.getElementLocalStorage('user');
+    this.user = this.utilsSvc.getElementLocalStorage('user');
    }
+  
 
   ngOnInit() {
     this.getUsers();
@@ -29,6 +30,7 @@ export class MainPage implements OnInit {
 
   ionViewWillEnter(){
     this.getUsers();
+    this.user = this.utilsSvc.getElementLocalStorage('user');
   }
 
   getUsers(){
@@ -37,17 +39,20 @@ export class MainPage implements OnInit {
       .subscribe({
         next: (resp: any)=>{
           console.log("entrei na page main: ");
+      
           this.users$ = resp;
+
         }
       })
+      
   }
 
-  isUidDuo(uid){
-    if(uid === this.user.uid){
-      return false;
-    }else{
-      return true;
-    }
-  }
+  // isUidDuo(uid){
+  //   if(uid === this.user.uid){
+  //     return false;
+  //   }else{
+  //     return true;
+  //   }
+  // }
 
 }

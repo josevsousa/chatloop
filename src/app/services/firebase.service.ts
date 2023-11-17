@@ -120,12 +120,11 @@ export class FirebaseService {
     return collectionData(query(ref, collectionQurey));
   }
   
-    // =============== upload de image ================
-    async uploadImage(path: string, data_url: string){
-      return uploadString(ref(getStorage(), path), data_url, 'data_url').then(()=>{
-        return getDownloadURL(ref(getStorage(), path))
-      })
-    }
-
+  // =============== upload de image ================
+  async uploadImage(path: string, data_url: string){
+    return uploadString(ref(getStorage(), path), data_url, 'data_url').then(()=>{
+      return getDownloadURL(ref(getStorage(), path))
+    })
+  }
 
 }

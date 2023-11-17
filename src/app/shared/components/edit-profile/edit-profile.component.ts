@@ -70,6 +70,7 @@ export class EditProfileComponent implements OnInit {
 
       // === Atualizar o localStorage
       await this.utilsSvc.saveInLocalStore('user', {
+        uid: user.uid,
         nome: this.form.value.nome,
         idade: this.form.value.idade,
         sexo: this.form.value.sexo,
