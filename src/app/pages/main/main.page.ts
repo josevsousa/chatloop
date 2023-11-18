@@ -17,34 +17,32 @@ export class MainPage implements OnInit {
   firebaseSvc = inject(FirebaseService);
 
   users$: User[] = [];
-  user:User = {};
+  myUid: string;
 
   constructor() {
-    this.user = this.utilsSvc.getElementLocalStorage('user');
-   }
-  
+    this.myUid = this.firebaseSvc.getAuth().currentUser.uid;
+  }
 
   ngOnInit() {
-    this.getUsers();
+    this.getColletionData();
+    console.log("ngOnInit main ok : " + this.myUid + "--" + this.users$);
   }
 
-  ionViewWillEnter(){
-    this.getUsers();
-    this.user = this.utilsSvc.getElementLocalStorage('user');
+  ionViewWillEnter() {
+    this.getColletionData();   
+    console.log("ionViewWillEnter main ok : " + this.myUid );
   }
 
-  getUsers(){
+  getColletionData() {
     let path = "user";
     let sub = this.firebaseSvc.getColletionData(path)
       .subscribe({
-        next: (resp: any)=>{
+        next: (resp: any) => {
           console.log("entrei na page main: ");
-      
           this.users$ = resp;
-
         }
       })
-      
+
   }
 
   // isUidDuo(uid){

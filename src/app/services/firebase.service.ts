@@ -25,17 +25,17 @@ export class FirebaseService {
     map(user => ({ user }))
   )
 
-  constructor(private auth: AngularFireAuth) { 
+  constructor(private auth: AngularFireAuth) {
     // const userCollectionData = collection(this.firestore,'user');
     // this.userList$ = collectionData(userCollectionData);
   };
 
   // =========== AUTH ============
-  getAuth(){
+  getAuth() {
     return getAuth();
   }
 
- 
+
   // ====== Conectar ====
   loginGoogle() {
     return this.auth.signInWithPopup(new GoogleAuthProvider())
@@ -53,27 +53,29 @@ export class FirebaseService {
           photoUrl: user.user.photoURL,
           ativo: true
         }
-        
+
         // verificar se o user ja existe
         this.getDocument(path)
-          .then(resp=>{
+          .then(resp => {
             if (resp) {
               console.log('existe o user no db!')
               //=== atualizar que o user esta on ===
               this.updateDocument(path, {
                 ativo: true
-              });
-              // === gravar no localStorage
-              this.utilsSvc.saveInLocalStore('user', resp);
-            }else{
+              }).then(user => {
+                // === gravar no localStorage
+                // this.utilsSvc.saveInLocalStore('user', resp);
+              }).catch(err=>console.log("NAO GRAVOU NO FAIREBASE: "+err));
+            } else {
               console.log('nao existe o user no db!');
               // === gravar o user no db
-              this.setDocument(path, userLS);
+              this.setDocument(path, userLS).then(user=>{
               // === gravar no localStorage
-              this.utilsSvc.saveInLocalStore('user', userLS);
+              // this.utilsSvc.saveInLocalStore('user', userLS);
+              }).catch(err=>console.log("NAO GRAVOU NO FAIREBASE: "+err));
             }
           })
-          .catch(err=>console.log(err))
+          .catch(err => console.log(err))
           .finally()
 
       })
@@ -92,7 +94,7 @@ export class FirebaseService {
         ativo: false
       })
       //=== revomer user do localStorage
-      this.utilsSvc.delElementLocalStorage('user');
+      // this.utilsSvc.delElementLocalStorage('user');
 
     });
   }
@@ -115,14 +117,14 @@ export class FirebaseService {
     return addDoc(collection(getFirestore(), path), data);
   }
   // ==== Lista de user ======
-  getColletionData( path:string, collectionQurey?: any){
+  getColletionData(path: string, collectionQurey?: any) {
     const ref = collection(getFirestore(), path);
     return collectionData(query(ref, collectionQurey));
   }
-  
+
   // =============== upload de image ================
-  async uploadImage(path: string, data_url: string){
-    return uploadString(ref(getStorage(), path), data_url, 'data_url').then(()=>{
+  async uploadImage(path: string, data_url: string) {
+    return uploadString(ref(getStorage(), path), data_url, 'data_url').then(() => {
       return getDownloadURL(ref(getStorage(), path))
     })
   }
